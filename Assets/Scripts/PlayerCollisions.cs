@@ -107,7 +107,7 @@ public class PlayerCollisions : MonoBehaviour
     {
         foreach (var gameObj in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            if (gameObj.name != "Table")
+            if (gameObj.name != "Debris")
             {
                 Destroy(gameObj);
             }

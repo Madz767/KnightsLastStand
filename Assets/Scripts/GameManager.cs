@@ -83,12 +83,10 @@ public class GameManager : MonoBehaviour
     //collecable abilities
     public void potionAbility()
     {
-        if (getHP() < 3 && Potion)
-        {
-            PlayerHP++;
-            Potion = false;
-            Debug.Log(PlayerHP);
-        }
+        PlayerHP++;
+        Potion = false;
+        Debug.Log(PlayerHP);
+        
     }
 
     public void shieldAbility(Collider2D col)
