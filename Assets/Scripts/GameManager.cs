@@ -1,14 +1,19 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameObject pauseMenu;
+    public GameObject hpScore;
+    public GameObject pointsScore;
     //List of Things GameManager will control
     //1: Player Score
     //2: Player is Dead or Not
     //3: collectable abilities
+    //4: menus
 
 
 
@@ -27,7 +32,12 @@ public class GameManager : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        updateStats();        
+        
 
+    }
 
 
 
@@ -113,6 +123,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //canvas functions
     public void pause()
     {
         if (!gamePaused)
@@ -130,6 +141,19 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void updateStats()
+    {
+        string hp = "HP: " + getHP().ToString();
+        string points = "Points" + getScore().ToString();
+        //hpScore.GetComponent<Text>().text += hp;
+        pointsScore.GetComponent<Text>().text += points;
+        
+        hpScore.gameObject.GetComponent<Text>().text = hp;
+
+    }
+
+
+
     public void isDead()
     {
         //this is my gameOver function
@@ -144,5 +168,6 @@ public class GameManager : MonoBehaviour
 
     }    
 
+    
 
 }
