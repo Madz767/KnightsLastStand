@@ -19,6 +19,7 @@ public class PlayerCollisions : MonoBehaviour
     void Update()
     {
         GameManager.instance.isDead();
+
         if (!GameManager.instance.getPotion())
         {
             Potion_Player.SetActive(false);
@@ -48,20 +49,20 @@ public class PlayerCollisions : MonoBehaviour
 
         if (col.gameObject.CompareTag("Collectable"))
         {
-            if (col.gameObject.name == "Coin")
+            if (col.gameObject.name.Contains("Coin"))
             {
                 //increases score
                 GameManager.instance.setScore(GameManager.instance.getScore() + 1);
                 Destroy(col.gameObject);
                 //Debug.Log(GameManager.instance.getScore());
             }
-            else if (col.gameObject.name == "Sword")
+            else if (col.gameObject.name.Contains("Sword"))
             {
                 //this object will delete/defeat all current enemies
                 swordAbility();
                 Destroy(col.gameObject);
             }
-            else if (col.gameObject.name == "Shield")
+            else if (col.gameObject.name.Contains("Shield"))
             {
                 //this object will allow the player to survive one hit
                 //this object turns what would have been damage into 1 point
@@ -77,7 +78,7 @@ public class PlayerCollisions : MonoBehaviour
                 }
 
             }
-            else if (col.gameObject.name == "Potion")
+            else if (col.gameObject.name.Contains("Potion"))
             {
                 //this object will allow the player to heal one HP
                 if(!Potion_Player)

@@ -24,12 +24,5 @@ public class EnemyController : MonoBehaviour
         ERB.linearVelocity = new Vector2(Speed * -1, 0);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(this.gameObject);
-        }
-    }
 
 }

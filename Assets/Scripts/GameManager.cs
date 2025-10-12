@@ -4,9 +4,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public GameObject pauseMenu;
     //List of Things GameManager will control
     //1: Player Score
     //2: Player is Dead or Not
+    //3: collectable abilities
+
 
 
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
     private int PlayerHP = 3;
     private bool Potion = false;
     private bool Shield = false;
+    private bool gamePaused = false;
 
     public int getScore()
     {
@@ -91,21 +95,40 @@ public class GameManager : MonoBehaviour
 
     public void shieldAbility(Collider2D col)
     {
-        if(Shield)
+        if (!Shield)
         {
-            score++;
+            PlayerHP -=1;
+            Destroy(col.gameObject);
+            Debug.Log(PlayerHP);
+            return;
+        }
+        if (Shield)
+        {
+            score+=1;
             Destroy(col.gameObject);
             Shield = false;
             Debug.Log(score);
+            return;
         }
-        else if (!Shield)
-        {
-            PlayerHP--;
-            Destroy(col.gameObject);
-            Debug.Log(PlayerHP);
-        }
+
     }
 
+    public void pause()
+    {
+        if (!gamePaused)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+            gamePaused = true;
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            gamePaused = false;
+        }
+
+    }
 
     public void isDead()
     {

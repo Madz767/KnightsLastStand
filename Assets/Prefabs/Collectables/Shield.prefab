@@ -78,7 +78,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_Sprite: {fileID: -2413806693520163455, guid: 7f457f15d9c57ab4d92821888485764a, type: 3}
   m_Color: {r: 0.5764706, g: 0.5411765, b: 0.5411765, a: 1}
   m_FlipX: 0
@@ -172,7 +172,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -2413806693520163455, guid: 7f457f15d9c57ab4d92821888485764a, type: 3}
   m_Color: {r: 0.69803923, g: 0.30980393, b: 0, a: 1}
   m_FlipX: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a63cb198045ea49bcc8ec6fd3275c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectableController
-  Speed: 0
+  Speed: 4
 --- !u!50 &8429279300287955061
 Rigidbody2D:
   serializedVersion: 5

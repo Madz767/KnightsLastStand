@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     public float moveSpeed;
     public float vertSpeed;
     private float sideInput;
@@ -32,19 +31,14 @@ public class PlayerController : MonoBehaviour
 
     private void otherButtons()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-
-        }
         if(Input.GetKeyDown(KeyCode.Q) && GameManager.instance.getPotion() && GameManager.instance.getHP() < 3)
         {
             GameManager.instance.potionAbility();
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && GameManager.instance.getPotion() && GameManager.instance.getHP() == 3)
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-
+            GameManager.instance.pause();
         }
-
 
     }
 
