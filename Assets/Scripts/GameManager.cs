@@ -6,6 +6,8 @@ using UnityEngine.InputSystem.Controls;
 using System;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Schema;
 
 
 public class GameManager : MonoBehaviour
@@ -240,48 +242,19 @@ public class GameManager : MonoBehaviour
 
         string playerName = nameOfPlayer.text;
         PlayerClass current = new PlayerClass(0, "testing", 2);
-        PlayerClass temp = new PlayerClass(0, "", 0);
+        topPlayers.Add(current);
+        topPlayers.OrderBy(x => x.getScore()).ToList();
+        topPlayers.Sort();
 
-        foreach (var item in topPlayers)
-        {
-            //bubble sort time
-            if (current.getScore() > item.getScore())
-            {
-                //if current players score is greater
-                //make the old score a temp home
-                //change the values in the items old home
-                //change current to become the old score
-                //and pass it down
-                temp = item;
-                current.setPos(item.getPos());
-                item.setName(current.getName());
-                item.setScore(current.getScore());
-                current=temp;
-            }
-            else if (current.getScore() == item.getScore())
-            {
-                //if the scores are the same, the newer score will 
-                //shift the old score down
-                temp = item;
-                current.setPos(item.getPos());
-                item.setName(current.getName());
-                item.setScore(current.getScore());
-                current = temp;
-            }
-            else if (current.getScore() < item.getScore())
-            {
-                //if it gets to this point i have to shift the 
-                //current item to be the next item
-                current.setPos(item.getPos());
-                item.setPos(current.getPos());
-                item.setName(current.getName());
-                item.setScore(current.getScore());
-            }
-        }
+        int posInList = 0;
 
         foreach (var item in topPlayers)
         {
             Debug.Log(item.getPos() + item.getName() + item.getScore());
+            
+            item.setPos(posInList);
+
+            posInList++;
         }
 
 
