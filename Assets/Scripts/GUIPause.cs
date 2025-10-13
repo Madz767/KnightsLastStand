@@ -1,3 +1,4 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +12,11 @@ public class GUIPause : MonoBehaviour
         Pause.SetActive(false);
     }
 
-    
+    public void playAgain()
+    {
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
     public void resume()
     {

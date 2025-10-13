@@ -53,6 +53,7 @@ public class PlayerCollisions : MonoBehaviour
             {
                 //increases score
                 GameManager.instance.setScore(GameManager.instance.getScore() + 1);
+                GameManager.instance.updateStats();
                 Destroy(col.gameObject);
                 //Debug.Log(GameManager.instance.getScore());
             }
