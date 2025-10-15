@@ -8,6 +8,8 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Schema;
+using Unity.VisualScripting;
+using System.IO;
 
 
 public class GameManager : MonoBehaviour
@@ -15,9 +17,9 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject pauseMenu;
     public GameObject GameOver;
+    public GameObject Player_Score;
     public TextMeshProUGUI hpScore;
     public TextMeshProUGUI pointsScore;
-    public TextMeshProUGUI nameOfPlayer;
     public TextAsset textFile;
     //List of Things GameManager will control
     //1: Player Score
@@ -34,13 +36,14 @@ public class GameManager : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
+            Player_Score.SetActive(true);
         }
         else
         {
             instance = this;
         }
         Time.timeScale = 1;
-        updateLeaderBoard();
+        //updateLeaderBoard();
     }
 
 
@@ -50,9 +53,13 @@ public class GameManager : MonoBehaviour
     //variables
     private int score = 0;
     private int PlayerHP = 3;
+    private bool gameDead = false;
     private bool Potion = false;
     private bool Shield = false;
-    private bool gamePaused = false;
+    private static bool gamePaused = false;
+    private string pName = string.Empty;
+    public List<PlayerClass> topPlayers = new List<PlayerClass>();
+
 
     public int getScore()
     {
@@ -99,6 +106,23 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+
+
+    //this is for the player name
+    public string getPlayerName()
+    {
+        if(pName == string.Empty)
+        {
+            return "Unkown";
+        }
+        return pName;
+    }
+    
+    public void setPlayerName(string s)
+    {
+        pName = s;
+    }
+    
 
     //collecable abilities
     public void potionAbility()
@@ -168,44 +192,54 @@ public class GameManager : MonoBehaviour
         //this is my gameOver function
         //it will handle when the player dies
         
-        if(getHP() <= 0)
+        if(getHP() <= 0 && !gameDead)
         {
             Time.timeScale = 0;
+            pName = getPlayerName();
+            updateLeaderBoard(pName);
             GameOver.SetActive(true);
-            //updateLeaderBoard();
+            gameDead = true;
         }
 
 
     }    
 
-    
-    private void updateLeaderBoard()
+    public void resetScene()
     {
+        setHP(3);
+        setScore(0);
+        GameOver.SetActive(false);
+        gameDead=false;
+        Time.timeScale = 1;
+    }
 
+
+    public void updateLeaderBoard(string pName)
+    {
+        //Debug.Log("just in update leaderboard");
 
         string[] players = textFile.text.Split('\n');
-        
-        List<PlayerClass> topPlayers = new List<PlayerClass>();
+        topPlayers.Clear();
+        Debug.Log("just read the textfile");
+
         PlayerClass goodPlayer;
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < players.Length-1; i++)
         {
 
             
-            int pos = 0;
+
             string name = "";
             int score = 0;
 
             if(i==0)
             {
                 string[] data = players[i].Split(',');
-                pos = Int32.Parse(data[i]);
-                //Debug.Log(pos);
-                name = data[i + 1];
+                name = data[i];
                 //Debug.Log(name);
-                score = Int32.Parse(data[i + 2]);
+                score = Int32.Parse(data[i + 1]);
                 //Debug.Log(score);
                 //Debug.Log(players[i]);
-                goodPlayer = new PlayerClass(pos, name, score);
+                goodPlayer = new PlayerClass(name, score);
                 topPlayers.Add(goodPlayer);
                 i++;
             }
@@ -213,52 +247,66 @@ public class GameManager : MonoBehaviour
             for (int y = 0; y < 1; y++)
             {
                 string[] data = players[i].Split(',');
-                pos = Int32.Parse(data[y]);
-                //Debug.Log(pos);
-                name = data[y + 1];
-                //Debug.Log(name);
-                score = Int32.Parse(data[y + 2]);
-                //Debug.Log(score);
 
+
+                name = data[y];
+                //Debug.Log(name);
+                score = Int32.Parse(data[y + 1]);
+                //Debug.Log(score);
+                
 
                 //Debug.Log(players[i]);
+                goodPlayer = new PlayerClass(name, score);
+                topPlayers.Add(goodPlayer);
             }
-
-
-            goodPlayer = new PlayerClass(pos,name, score);
-            //Debug.Log(goodPlayer.getPos() + goodPlayer.getName() + goodPlayer.getScore());
-
-            topPlayers.Add(goodPlayer);
-        }
-
-        foreach (var item in topPlayers)
-        {
-            Debug.Log(item.getPos() + item.getName() + item.getScore());
-        }
-
-
-
-
-
-        string playerName = nameOfPlayer.text;
-        PlayerClass current = new PlayerClass(0, "testing", 2);
-        topPlayers.Add(current);
-        topPlayers.OrderBy(x => x.getScore()).ToList();
-        topPlayers.Sort();
-
-        int posInList = 0;
-
-        foreach (var item in topPlayers)
-        {
-            Debug.Log(item.getPos() + item.getName() + item.getScore());
             
-            item.setPos(posInList);
 
-            posInList++;
+
+            //Debug.Log(goodPlayer.getName() + goodPlayer.getScore());
+            //Debug.Log("about to add player to list" + topPlayers[i]);
+            
+;
+        }
+
+        //Debug.Log("right after creating a list");
+        //foreach (var item in topPlayers)
+        //{
+        //    Debug.Log(item.getName() + item.getScore() + "after creating the first list");
+
+        //}
+
+
+
+        PlayerClass current = new PlayerClass(getPlayerName(), getScore());
+        topPlayers.Add(current);
+
+        Debug.Log("just added current to list");
+
+        //this will sort the list in a descending order based on score
+        //or if you want to know how it works code wise it sorts it
+        //based on the second item in the class which in this case is score
+        topPlayers.Sort((a, b) => b.getScore().CompareTo(a.getScore()));
+        //Debug.Log("this is right after sorting");
+
+        //removing the 6th position then testing to see if it worked
+        topPlayers.RemoveAt(topPlayers.Count - 1);
+        foreach (var item in topPlayers)
+        {
+            Debug.Log(item.getName() + item.getScore());
+
         }
 
 
 
+        //writing to the text file
+        string filePath = Application.dataPath + "/HighScores.txt";
+        StreamWriter writing = new StreamWriter(filePath);
+        foreach (var item in topPlayers)
+        {
+            writing.WriteLine(item.getName() + "," + item.getScore());
+
+        }
+        writing.Close();
     }
 
 

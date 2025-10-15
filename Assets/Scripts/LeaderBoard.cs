@@ -5,25 +5,51 @@ using TMPro;
 
 public class LeaderBoard : MonoBehaviour
 {
-
+    public static LeaderBoard instance;
     public TextMeshProUGUI leader;
     public TextAsset textFile;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
-        fillLeader();
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            
+        }
+        else
+        {
+            instance = this;
+        }
+
+        //if(!firstRead)
+        //{
+        //    fillLeaderFromText();
+        //    Debug.Log("I am awake -Leader1" + firstRead);
+        //}
+        //else if (firstRead)
+        //{
+        //    fillLeaderFromText();
+        //    Debug.Log("I am awake -Leader2" + firstRead);
+        //}
+        
+        //updateLeaderBoard();
     }
 
 
-
-    public void play()
+    private void OnEnable()
     {
-        SceneManager.LoadScene("Runner");
+        fillLeaderFromText();
     }
 
     public void mainMenu()
     {
+        DontDestroyOnLoad(GameManager.instance);
+        if (LeaderBoard.instance != null)
+        {
+            DontDestroyOnLoad (LeaderBoard.instance);
+            LeaderBoard.instance.gameObject.SetActive(false);
+        }
         SceneManager.LoadScene("Menu");
     }
 
@@ -33,7 +59,7 @@ public class LeaderBoard : MonoBehaviour
     }
 
 
-    private void fillLeader()
+    public void fillLeaderFromText()
     {
         string[] data = textFile.text.Split('\n');
         string topPlayers = "";
@@ -45,7 +71,20 @@ public class LeaderBoard : MonoBehaviour
         leader.text = topPlayers;
     }
 
+    //private void fillLeaderFromList()
+    //{
 
+    //    string name = "";
+    //    leader.text = "";
+    //    int score = 0;
+    //    for (int i = 0; i < 5; i++)
+    //    {
+    //        name = GameManager.instance.topPlayers[i].getName();
+    //        score = GameManager.instance.topPlayers[i].getScore();
+    //        leader.text += name + score.ToString() + "\n";
+    //    }
+    //    //leader.text = name + score.ToString() + "\n";
+    //}
 
 
 

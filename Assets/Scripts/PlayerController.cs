@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         //lateralMovement();
         //verticalMovement();
+        GameManager.instance.updateStats();
         movement();
         otherButtons();
     }
